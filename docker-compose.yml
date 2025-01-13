@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "main_database"
+      POSTGRES_USER: "main_user"
+      POSTGRES_PASSWORD: "main_password"
+
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "main_user", "-d", "main_database" ]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+
+volumes:
+  db-data:

@@ -1,0 +1,9 @@
+python-dotenv
+python-dateutil
+asyncpg
+uvicorn
+fastapi
+pydantic
+sqlalchemy
+yarl
+greenlet
